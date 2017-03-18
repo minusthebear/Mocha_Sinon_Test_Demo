@@ -1,7 +1,15 @@
 var _ = require("underscore")._;
+var moment = require("moment");
 
 var MembershipApplication = function(args){
+	args || (args = {});
 	_.extend(this, args);
+
+	this.validUntil = args.validUntil ? moment(args.validUntil) : moment().add(10, "days");
+
+	this.expired = function(){
+		return this.validUntil.isBefore(moment());
+	};
 
 	this.emailIsValid = function(){
 		return this.email && this.email.length > 3 && this.email.indexOf("@") > -1;
@@ -28,7 +36,8 @@ var MembershipApplication = function(args){
 				this.nameIsValid() &&
 				this.heightIsValid() &&
 				this.weightIsValid() &&
-				this.ageIsValid();
+				this.ageIsValid() &&
+				!this.expired();
 	};
 
 };
