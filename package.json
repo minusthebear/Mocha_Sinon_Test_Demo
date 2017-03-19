@@ -9,6 +9,7 @@
   "author": "Matthew Hamann",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.1.5",
     "moment": "^2.18.0",
     "underscore": "^1.8.3"
   },

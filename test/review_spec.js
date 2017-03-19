@@ -14,20 +14,20 @@ describe("The Review Process", function(){
 			height: 66,
 			weight: 180
 		});
-		let review = new ReviewProcess();
-		let spy = sinon.spy();
+		let review = new ReviewProcess({application: validApp});
 		
 		// See notes below for spy functions which work and which don't work
 
 		// With spies, you don't want to invoke the method or function you want to use.
 		// You want to specify "spy" as the function to be called and you leave that to the EventEmitter.
 		
+		sinon.spy(review, "ensureAppValid");
+		sinon.spy(review, "findNextMission");
+		sinon.spy(review, "roleIsAvailable");
+		sinon.spy(review, "ensureRoleCompatible");
+
 		before(function(done){
-			review.on("validated", spy);
-			review.on("mission-selected", spy);
-			review.on("role-available", spy);
-			review.on("role-compatible", spy);
-			review.processApplication(validApp, function(err, result){
+			review.processApplication(function(err, result){
 				decision = result;
 				done();
 			});
@@ -36,10 +36,17 @@ describe("The Review Process", function(){
 		it("returns success", function(){
 			assert(decision.success, decision.message);
 		});
-		it("validates email", function(){
-			assert.equal(spy.callCount, 4);
-			// For one call
-			// assert(spy.called);
+		it("ensures app is valid", function(){
+			assert(review.ensureAppValid.called);
+		});
+		it("selects a mission", function(){
+			assert(review.findNextMission.called);
+		});
+		it("ensures a role exists", function(){
+			assert(review.roleIsAvailable.called);
+		});
+		it("ensures role compatibility", function(){
+			assert(review.ensureRoleCompatible.called);
 		});
 	});
 });
@@ -65,4 +72,13 @@ describe("The Review Process", function(){
 		 *		assert(review.ensureAppValid.called);
 		 *	});
 		 *
+		 */
+
+		// This works, too:
+		//	let review = new ReviewProcess({application: validApp});
+		/*
+		 *	sinon.spy(review, "ensureAppValid");
+		 *	sinon.spy(review, "findNextMission");
+		 *	sinon.spy(review, "roleIsAvailable");
+		 *	sinon.spy(review, "ensureRoleCompatible");
 		 */
