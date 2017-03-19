@@ -1,7 +1,7 @@
-var _ = require("underscore")._;
-var moment = require("moment");
+const _ = require("underscore")._;
+const moment = require("moment");
 
-var MembershipApplication = function(args){
+const MembershipApplication = function(args){
 	args || (args = {});
 	_.extend(this, args);
 
@@ -29,6 +29,24 @@ var MembershipApplication = function(args){
 
 	this.nameIsValid = function(){
 		return this.first && this.last;
+	};
+
+	this.validationMessage = function(){
+		if(this.isValid()){
+			return "Application is valid";
+		} else if (!this.emailIsValid()){
+			return "Email is invalid";
+		}else if (!this.ageIsValid()){
+			return "Age is invalid";
+		}else if (!this.heightIsValid()){
+			return "Height is invalid";
+		}else if (!this.weightIsValid()){
+			return "Weight is invalid";
+		}else if (!this.nameIsValid()){
+			return "Name is invalid";
+		} else if (this.expired()){
+			return "This application has expired";
+		}
 	};
 
 	this.isValid = function(){
