@@ -19,6 +19,10 @@ var MembershipApplication = function(args){
 		return this.age && this.age > 15 && this.age < 100;
 	};
 
+	this.nameIsValid = function(){
+		return this.first && this.last;
+	};
+
 	this.isValid = function(){
 		return this.emailIsValid() &&
 				this.heightIsValid() &&

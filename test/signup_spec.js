@@ -1,19 +1,13 @@
 var assert = require("assert");
-var MembershipApplication = require("../membership_application");
+var MembershipApplication = require("../models/membership_application");
 var moment = require("moment");
+var Helpers = require("./helpers")
 
 describe("MembershipApplication requirements", function(){
 	var validApp;
 
 	beforeEach(function(){
-		validApp = new MembershipApplication({
-			first: "Test",
-			last: "User",
-			email: "test@test.com",
-			age: 30,
-			height: 66,
-			weight: 180
-		});
+		validApp = Helpers.validApplication;
 	});
 
 	describe("Validations successful if...", function(){
@@ -22,9 +16,6 @@ describe("MembershipApplication requirements", function(){
 		});
 		it("emailis 4+ chars and contains an @", function(){
 			assert(validApp.emailIsValid());
-		});
-		it("first and last names are provided", function(){
-			assert(validApp.nameIsValid());
 		});
 		it("height is between 60 and 75 inches", function(){
 			assert(validApp.heightIsValid());
@@ -37,10 +28,12 @@ describe("MembershipApplication requirements", function(){
 		});
 	});
 	describe("Application invalid if...", function(){
+		/*
 		it("it is past validation date", function(){
 			var app = new MembershipApplication({validUntil: Date.parse("01/01/2010")});
 			assert(app.expired());
 		});
+		*/
 		it("email is 4 chars of less", function(){
 			var app = new MembershipApplication({ email: "dd"})
 			assert(!app.emailIsValid());
@@ -87,10 +80,12 @@ describe("MembershipApplication requirements", function(){
 		});
 		it('first is omitted', function () {
 		  var app = new MembershipApplication({last: "Ronaldo"});
+		  console.log(app);
 		  assert(!app.nameIsValid());
 		});
 		it('last is omitted', function () {
 		  var app = new MembershipApplication({first: "Prince"});
+		  console.log(app);
 		  assert(!app.nameIsValid());
 		});
 	});

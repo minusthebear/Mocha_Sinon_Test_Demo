@@ -1,19 +1,12 @@
 const assert = require("assert");
 const ReviewProcess = require("../processes/review");
-const MembershipApplication = require("../membership_application");
+const Helpers = require("./helpers");
 const sinon = require("sinon");
 
 describe("The Review Process", function(){
 	describe("Receiving a valid application", function(){
 		let decision;
-		let validApp = new MembershipApplication({
-			first: "Test",
-			last: "User",
-			email: "test@test.com",
-			age: 30,
-			height: 66,
-			weight: 180
-		});
+		let validApp = Helpers.validApplication;
 		let review = new ReviewProcess({application: validApp});
 		
 		// See notes below for spy functions which work and which don't work
