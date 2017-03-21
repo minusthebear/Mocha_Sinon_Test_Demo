@@ -80,12 +80,10 @@ describe("MembershipApplication requirements", function(){
 		});
 		it('first is omitted', function () {
 		  var app = new MembershipApplication({last: "Ronaldo"});
-		  console.log(app);
 		  assert(!app.nameIsValid());
 		});
 		it('last is omitted', function () {
 		  var app = new MembershipApplication({first: "Prince"});
-		  console.log(app);
 		  assert(!app.nameIsValid());
 		});
 	});
