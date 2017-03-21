@@ -2,24 +2,31 @@ const assert = require("assert");
 const ReviewProcess = require("../processes/review");
 const Helpers = require("./helpers");
 const sinon = require("sinon");
+const MissionControl = require("../models/mission_control");
+const DB = require("../db");
+const Mission = require("../models/mission");
 
 describe("The Review Process", function(){
 	describe("Receiving a valid application", function(){
-		let decision;
-		let validApp = Helpers.validApplication;
-		let review = new ReviewProcess({application: validApp});
+		let decision, review, db, validApp = Helpers.validApplication;
+		// let missionControl = new MissionControl({db: db});
 		
 		// See notes below for spy functions which work and which don't work
 
 		// With spies, you don't want to invoke the method or function you want to use.
 		// You want to specify "spy" as the function to be called and you leave that to the EventEmitter.
-		
-		sinon.spy(review, "ensureAppValid");
-		sinon.spy(review, "findNextMission");
-		sinon.spy(review, "roleIsAvailable");
-		sinon.spy(review, "ensureRoleCompatible");
 
 		before(function(done){
+			
+			db = Helpers.stubDb();
+
+			review = new ReviewProcess({application: validApp, db: db});
+			
+			sinon.spy(review, "ensureAppValid");
+			sinon.spy(review, "findNextMission");
+			sinon.spy(review, "roleIsAvailable");
+			sinon.spy(review, "ensureRoleCompatible");
+			
 			review.processApplication(function(err, result){
 				decision = result;
 				done();
